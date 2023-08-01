@@ -8,6 +8,9 @@ import (
 type CustomerController interface {
     GetAll(c *gin.Context)
     GetById(c *gin.Context)
+    Add(c *gin.Context)
+    Update(c *gin.Context)
+    Delete(c *gin.Context)
 }
 
 type CustomerControllerImpl struct {
@@ -21,6 +24,20 @@ func (c CustomerControllerImpl) GetAll(ctx *gin.Context) {
 func (c CustomerControllerImpl) GetById(ctx *gin.Context) {
     customerId := ctx.Param("id")
     c.CustomerService.GetById(ctx, customerId)
+}
+
+func (c CustomerControllerImpl) Add(ctx *gin.Context) {
+    c.CustomerService.Add(ctx)
+}
+
+func (c CustomerControllerImpl) Update(ctx *gin.Context) {
+    customerId := ctx.Param("id")
+    c.CustomerService.Update(ctx, customerId)
+}
+
+func (c CustomerControllerImpl) Delete(ctx *gin.Context) {
+    customerId := ctx.Param("id")
+    c.CustomerService.Delete(ctx, customerId)
 }
 
 func CustomerControllerInit(customerService services.CustomerService) *CustomerControllerImpl {
