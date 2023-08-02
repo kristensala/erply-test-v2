@@ -4,6 +4,8 @@ Run `docker compose -f docker-compose-redis.yml up` to start redis cache locally
 Once redis is running start the api by running `go run .`
 
 ## Api authorization
+For the sake of simplicity user and user secret are hardcoded
+
 ### Postman scipt
 ```
 var AppId = "test";
