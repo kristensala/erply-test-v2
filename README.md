@@ -1,5 +1,5 @@
 # Start
-Run `docker compose -f docker-compose-redis.yml up` to start redis cache locally. If cache can not be reached the errors will be overlooked here and request will be make against ERPLY API.
+Run `docker compose -f docker-compose-redis.yml up` to start redis cache locally. If cache can not be reached the errors will be overlooked here and request will be made against ERPLY API.
 
 Once redis is running start the api by running `go run .`
 
