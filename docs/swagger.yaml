@@ -1,0 +1,303 @@
+definitions:
+  models.ApiResponse:
+    properties:
+      data: {}
+      isSuccess:
+        default: true
+        type: boolean
+      message:
+        type: string
+    type: object
+  models.CreateCustomerRequest:
+    properties:
+      code:
+        type: string
+      companyName:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+    required:
+    - code
+    - companyName
+    type: object
+  models.CustomerResponse:
+    properties:
+      EDI:
+        type: string
+      GLN:
+        type: string
+      address:
+        type: string
+      address2:
+        type: string
+      bankAccountNumber:
+        type: string
+      bankIBAN:
+        type: string
+      bankName:
+        type: string
+      bankSWIFT:
+        type: string
+      birthday:
+        type: string
+      city:
+        type: string
+      code:
+        type: string
+      colorStatus:
+        type: string
+      companyName:
+        type: string
+      companyTypeID:
+        type: integer
+      country:
+        type: string
+      countryID:
+        type: string
+      credit:
+        type: integer
+      creditCardLastNumbers:
+        type: string
+      customerBalanceDisabled:
+        type: integer
+      customerCardNumber:
+        type: string
+      customerID:
+        type: integer
+      customerType:
+        type: string
+      defaultAssociationID:
+        type: integer
+      defaultAssociationName:
+        type: string
+      defaultProfessionalID:
+        type: integer
+      defaultProfessionalName:
+        type: string
+      eInvoiceEmail:
+        type: string
+      eInvoiceEnabled:
+        type: integer
+      email:
+        type: string
+      emailEnabled:
+        type: integer
+      emailOptOut:
+        type: integer
+      euCustomerType:
+        type: string
+      facebookName:
+        type: string
+      factoringContractNumber:
+        type: string
+      fax:
+        type: string
+      firstName:
+        type: string
+      flagStatus:
+        type: integer
+      fullName:
+        type: string
+      gender:
+        type: string
+      groupID:
+        type: integer
+      groupName:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      integrationCode:
+        type: string
+      isPOSDefaultCustomer:
+        type: integer
+      lastModified:
+        type: integer
+      lastModifierUsername:
+        type: string
+      lastName:
+        type: string
+      mailEnabled:
+        type: integer
+      mobile:
+        type: string
+      notes:
+        type: string
+      operatorIdentifier:
+        type: string
+      payerID:
+        type: integer
+      paymentDays:
+        type: integer
+      paysViaFactoring:
+        type: integer
+      personTitleID:
+        type: integer
+      phone:
+        type: string
+      posCouponsDisabled:
+        type: integer
+      postalCode:
+        type: string
+      priceListID:
+        description: Detailed info
+        type: integer
+      priceListID2:
+        type: integer
+      priceListID3:
+        type: integer
+      referenceNumber:
+        type: string
+      rewardPointsDisabled:
+        type: integer
+      salesBlocked:
+        type: integer
+      shipGoodsWithWaybills:
+        type: integer
+      state:
+        type: string
+      street:
+        type: string
+      taxExempt:
+        type: integer
+      twitterID:
+        type: string
+      type_id:
+        type: string
+      vatNumber:
+        type: string
+      webshopLastLogin:
+        type: string
+      webshopUsername:
+        description: Web-shop related fields
+        type: string
+    type: object
+  models.UpdateCustomerRequest:
+    properties:
+      code:
+        type: string
+      email:
+        type: string
+      firstName:
+        type: string
+      'id: binding:':
+        type: string
+      lastName:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /create:
+    post:
+      parameters:
+      - description: customer data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.CreateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ApiResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: create a new customer
+      tags:
+      - Customer
+  /get/{id}:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ApiResponse'
+            - properties:
+                data:
+                  $ref: '#/definitions/models.CustomerResponse'
+              type: object
+      summary: get customer by id
+      tags:
+      - Customer
+  /getAll:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ApiResponse'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/models.CustomerResponse'
+                  type: array
+              type: object
+      summary: get all customers details
+      tags:
+      - Customer
+  /remove/{id}:
+    delete:
+      parameters:
+      - description: customer id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ApiResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: delete a customer from the system
+      tags:
+      - Customer
+  /update:
+    post:
+      parameters:
+      - description: customer data
+        in: body
+        name: data
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateCustomerRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            allOf:
+            - $ref: '#/definitions/models.ApiResponse'
+            - properties:
+                data:
+                  type: object
+              type: object
+      summary: update an existing customer
+      tags:
+      - Customer
+swagger: "2.0"

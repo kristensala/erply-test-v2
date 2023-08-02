@@ -19,6 +19,9 @@ import (
 const MaxRequestAgeSeconds = 300
 const HmacAuthScheme = "APIAuth-HMAC-SHA256"
 
+// For the sake of this test and for simplicity
+// api credentaials are defined here
+// otherwise they would be in a database
 const (
     user = "test"
     secret = "test"

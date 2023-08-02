@@ -17,7 +17,7 @@ type CustomerService interface {
     GetAll(c *gin.Context)
     GetById(c *gin.Context, customerId string)
     Add(c *gin.Context)
-    Update(c *gin.Context, customerId string)
+    Update(c *gin.Context)
     Delete(c *gin.Context, customerId string)
 }
 
@@ -128,14 +128,12 @@ func (c CustomerServiceImpl) Add(ctx *gin.Context) {
     return
 }
 
-func (c CustomerServiceImpl) Update(ctx *gin.Context, customerId string) {
+func (c CustomerServiceImpl) Update(ctx *gin.Context) {
     var request models.UpdateCustomerRequest
     if err := ctx.ShouldBindJSON(&request); err != nil {
         ctx.Error(err)
         return
     }
-
-    request.Id = customerId
 
     if request.Code != "" && helpers.IsValidRegCode(request.Code) {
         ctx.IndentedJSON(http.StatusOK, models.ApiResponse{

@@ -10,7 +10,7 @@ type CreateCustomerRequest struct {
 }
 
 type UpdateCustomerRequest struct {
-    Id string `json:"id"`
+    Id string `json:"id: binding:"required"`
     FirstName string `json:"firstName"`
     LastName string `json:"lastName"`
     Code string `json:"code"`
