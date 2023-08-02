@@ -26,7 +26,7 @@ func InitRouter(init *config.Initialization) *gin.Engine {
     cust.GET("/getAll", init.CustomerController.GetAll)
     cust.GET("/get/:id", init.CustomerController.GetById)
     cust.POST("/create", init.CustomerController.Add)
-    cust.POST("/update/", init.CustomerController.Update)
+    cust.POST("/update", init.CustomerController.Update)
     cust.DELETE("/remove/:id", init.CustomerController.Delete)
 
     router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler) )
