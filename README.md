@@ -1,3 +1,5 @@
+This here is a refactored version of my first draft [erply-test](https://github.com/kristensala/erply-test)
+
 # Start
 Run `docker compose -f docker-compose-redis.yml up` to start redis cache locally. If cache can not be reached the errors will be overlooked here and request will be made against ERPLY API.
 
