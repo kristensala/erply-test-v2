@@ -36,6 +36,9 @@ pm.variables.set("hmacKey", hmacKey)
 
 **Date**: {{hmacDate}}
 
+## ERPLY API authorizatio
+Currently the values are stored under erply_constants.go file. If I would be using cloud hosting these values would be stored in secure 'KeyVaults'
+
 # Swagger doc
 Swagger URL is localhost:5123/swagger/index.html
 
