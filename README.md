@@ -4,7 +4,7 @@ Run `docker compose -f docker-compose-redis.yml up` to start redis cache locally
 Once redis is running start the api by running `go run .`
 
 ## Api authorization
-For the sake of simplicity user and user secret are hardcoded
+For the sake of simplicity user and user secret are hardcoded. Look [hmac_auth_handler.go](/app/middleware/hmac_auth_handler.go)
 
 ### Postman scipt
 ```js
