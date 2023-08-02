@@ -36,7 +36,7 @@ pm.variables.set("hmacKey", hmacKey)
 **Date**: {{hmacDate}}
 
 ## Examples
-Some examples can be found under [/examples](examples)
+Some examples can be found under [/examples](erply-test-v2/examples/)
 
 ## ERPLY API authorization
 Currently the values are stored under erply_constants.go file. If I would be using cloud hosting these values would be stored in secure 'KeyVaults'
