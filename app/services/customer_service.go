@@ -2,6 +2,8 @@ package services
 
 import (
 	"context"
+	"encoding/json"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -23,7 +25,12 @@ type CustomerServiceImpl struct {
     cache *redis.Client
 }
 
+const (
+    customerCacheKey = "_Customer_%v"
+)
+
 func (c CustomerServiceImpl) GetAll(ctx *gin.Context) {
+
     ct, cancel := context.WithTimeout(context.Background(), time.Second * 10)
     defer cancel()
 
@@ -31,6 +38,13 @@ func (c CustomerServiceImpl) GetAll(ctx *gin.Context) {
     if apiError != nil {
         ctx.Error(apiError)
         return
+    }
+
+    for _, customer := range apiResponse {
+        customerJson, _ := json.Marshal(&customer)
+        cacheKey := fmt.Sprintf(customerCacheKey, customer.ID)
+
+        helpers.SetCacheKeyValue(*c.cache, cacheKey, string(customerJson), 10)
     }
 
     ctx.IndentedJSON(http.StatusOK, models.ApiResponse{
@@ -42,8 +56,23 @@ func (c CustomerServiceImpl) GetAll(ctx *gin.Context) {
 }
 
 func (c CustomerServiceImpl) GetById(ctx *gin.Context, customerId string) {
+    cacheKey := fmt.Sprintf(customerCacheKey, customerId)
     filter := map[string]string {
         "customerID": customerId,
+    }
+
+    cacheGetResponse := helpers.GetFromCache(*c.cache, cacheKey)
+
+    var mappedCacheValue models.CustomerResponse
+    json.Unmarshal([]byte(cacheGetResponse), &mappedCacheValue)
+
+    if mappedCacheValue.ID != 0 {
+        ctx.IndentedJSON(http.StatusOK, models.ApiResponse{
+            IsSuccess: true,
+            Data: mappedCacheValue,
+        })
+
+        return
     }
 
     ct, cancel := context.WithTimeout(context.Background(), time.Second * 10)
@@ -54,6 +83,9 @@ func (c CustomerServiceImpl) GetById(ctx *gin.Context, customerId string) {
         ctx.Error(apiError)
         return
     }
+
+    apiResponseJson, _ := json.Marshal(&apiResponse)
+    helpers.SetCacheKeyValue(*c.cache, cacheKey, string(apiResponseJson), 10)
 
     ctx.IndentedJSON(http.StatusOK, models.ApiResponse{
         IsSuccess: true,
