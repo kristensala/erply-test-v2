@@ -7,7 +7,7 @@ Once redis is running start the api by running `go run .`
 For the sake of simplicity user and user secret are hardcoded
 
 ### Postman scipt
-```
+```js
 var AppId = "test";
 var APIKey = "test";
 var currentDate = new Date();
@@ -16,11 +16,10 @@ requestURI = requestURI.split("?")[0];
 console.log(requestURI)
 var requestContentBase64String = "";
 if (pm.request.body.raw) {
-    var md5 = CryptoJS.SHA256(pm.request.body.toString());
-    requestContentBase64String = md5.toString();
+    var sha = CryptoJS.SHA256(pm.request.body.toString());
+    requestContentBase64String = sha.toString();
 }
 
-console.log(requestContentBase64String)
 var signatureRawData  = `application/json,${requestContentBase64String},${requestURI},${currentDate.toUTCString()}`; //check
 var signature = CryptoJS.enc.Utf8.parse(signatureRawData);
 var secretByteArray = CryptoJS.enc.Base64.parse(APIKey);
