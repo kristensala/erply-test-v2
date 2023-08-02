@@ -30,7 +30,6 @@ const (
 )
 
 func (c CustomerServiceImpl) GetAll(ctx *gin.Context) {
-
     ct, cancel := context.WithTimeout(context.Background(), time.Second * 10)
     defer cancel()
 
