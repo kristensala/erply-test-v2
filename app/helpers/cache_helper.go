@@ -2,25 +2,22 @@ package helpers
 
 import (
 	"context"
-	"time"
-
 	"github.com/redis/go-redis/v9"
+	"time"
 )
 
-
 func GetFromCache(client redis.Client, key string) string {
-    pingErr := client.Ping(context.Background()).Err()
-    if pingErr != nil {
+    err := client.Ping(context.Background()).Err()
+    if err != nil {
         return "" 
-
     }
     cacheResult := client.Get(context.Background(), key).Val()
     return cacheResult
 }
 
 func SetCacheKeyValue(client redis.Client, key string, value interface{}, expirationTimeMinutes time.Duration) {
-    pingErr := client.Ping(context.Background()).Err()
-    if pingErr != nil {
+    err := client.Ping(context.Background()).Err()
+    if err != nil {
         return
     }
 

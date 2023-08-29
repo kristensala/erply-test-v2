@@ -16,7 +16,7 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/create": {
+        "/customer/create": {
             "post": {
                 "produces": [
                     "application/json"
@@ -58,7 +58,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/get/{id}": {
+        "/customer/get/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -89,7 +89,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/getAll": {
+        "/customer/getAll": {
             "get": {
                 "produces": [
                     "application/json"
@@ -123,7 +123,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/remove/{id}": {
+        "/customer/remove/{id}": {
             "delete": {
                 "produces": [
                     "application/json"
@@ -163,7 +163,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/update": {
+        "/customer/update": {
             "post": {
                 "produces": [
                     "application/json"

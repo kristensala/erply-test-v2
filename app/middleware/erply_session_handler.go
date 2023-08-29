@@ -14,7 +14,11 @@ func ErplySessionHandler() gin.HandlerFunc {
         sessionKey := ctx.GetString("sessionKey")
         sessionExpiryTime := ctx.GetString("sessionKeyExpireTime")
 
-        unixExpiryTime, _ := time.Parse(time.RFC1123, sessionExpiryTime)
+        unixExpiryTime, err := time.Parse(time.RFC1123, sessionExpiryTime)
+        if err != nil {
+            ctx.Error(err)
+        }
+
         if sessionKey == "" || sessionExpiryTime == "" || time.Now().After(unixExpiryTime) {
             sessionKey, err := auth.VerifyUser(
                 constants.ErplyUsername,

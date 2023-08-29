@@ -193,7 +193,7 @@ definitions:
 info:
   contact: {}
 paths:
-  /create:
+  /customer/create:
     post:
       parameters:
       - description: customer data
@@ -217,7 +217,7 @@ paths:
       summary: create a new customer
       tags:
       - Customer
-  /get/{id}:
+  /customer/get/{id}:
     get:
       produces:
       - application/json
@@ -234,7 +234,7 @@ paths:
       summary: get customer by id
       tags:
       - Customer
-  /getAll:
+  /customer/getAll:
     get:
       produces:
       - application/json
@@ -253,7 +253,7 @@ paths:
       summary: get all customers details
       tags:
       - Customer
-  /remove/{id}:
+  /customer/remove/{id}:
     delete:
       parameters:
       - description: customer id
@@ -276,7 +276,7 @@ paths:
       summary: delete a customer from the system
       tags:
       - Customer
-  /update:
+  /customer/update:
     post:
       parameters:
       - description: customer data

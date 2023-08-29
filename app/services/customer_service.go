@@ -4,21 +4,20 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"time"
-
 	"github.com/gin-gonic/gin"
 	"github.com/kristensala/erply-test-v2/app/helpers"
 	"github.com/kristensala/erply-test-v2/app/models"
 	"github.com/redis/go-redis/v9"
+	"net/http"
+	"time"
 )
 
 type CustomerService interface {
+    Add(c *gin.Context)
+    Delete(c *gin.Context, customerId string)
     GetAll(c *gin.Context)
     GetById(c *gin.Context, customerId string)
-    Add(c *gin.Context)
     Update(c *gin.Context)
-    Delete(c *gin.Context, customerId string)
 }
 
 type CustomerServiceImpl struct {
@@ -29,18 +28,29 @@ const (
     customerCacheKey = "_Customer_%v"
 )
 
+func CustomerServiceInit(cache *redis.Client) *CustomerServiceImpl {
+    return &CustomerServiceImpl{
+        cache: cache,
+    }
+}
+
 func (c CustomerServiceImpl) GetAll(ctx *gin.Context) {
     ct, cancel := context.WithTimeout(context.Background(), time.Second * 10)
     defer cancel()
 
-    apiResponse, apiError := helpers.GetErplyClient(ctx).CustomerManager.GetCustomers(ct, nil)
-    if apiError != nil {
-        ctx.Error(apiError)
+    apiResponse, err := helpers.GetErplyClient(ctx).CustomerManager.GetCustomers(ct, nil)
+    if err != nil {
+        ctx.Error(err)
         return
     }
 
     for _, customer := range apiResponse {
-        customerJson, _ := json.Marshal(&customer)
+        customerJson, err := json.Marshal(&customer)
+        if err != nil {
+            ctx.Error(err)
+            return
+        }
+
         cacheKey := fmt.Sprintf(customerCacheKey, customer.ID)
 
         helpers.SetCacheKeyValue(*c.cache, cacheKey, string(customerJson), 10)
@@ -77,9 +87,9 @@ func (c CustomerServiceImpl) GetById(ctx *gin.Context, customerId string) {
     ct, cancel := context.WithTimeout(context.Background(), time.Second * 10)
     defer cancel()
 
-    apiResponse, apiError := helpers.GetErplyClient(ctx).CustomerManager.GetCustomers(ct, filter)
-    if apiError != nil {
-        ctx.Error(apiError)
+    apiResponse, err := helpers.GetErplyClient(ctx).CustomerManager.GetCustomers(ct, filter)
+    if err != nil {
+        ctx.Error(err)
         return
     }
 
@@ -114,9 +124,9 @@ func (c CustomerServiceImpl) Add(ctx *gin.Context) {
     ct, cancel := context.WithTimeout(context.Background(), time.Second * 10)
     defer cancel()
 
-    apiResponse, apiError := helpers.GetErplyClient(ctx).CustomerManager.SaveCustomer(ct, helpers.JsonToMap(request))
-    if apiError != nil {
-        ctx.Error(apiError)
+    apiResponse, err := helpers.GetErplyClient(ctx).CustomerManager.SaveCustomer(ct, helpers.JsonToMap(request))
+    if err != nil {
+        ctx.Error(err)
         return
     }
 
@@ -148,9 +158,9 @@ func (c CustomerServiceImpl) Update(ctx *gin.Context) {
     ct, cancel := context.WithTimeout(context.Background(), time.Second * 10)
     defer cancel()
 
-    apiResponse, apiError := helpers.GetErplyClient(ctx).CustomerManager.SaveCustomer(ct, helpers.JsonToMap(request))
-    if apiError != nil {
-        ctx.Error(apiError)
+    apiResponse, err := helpers.GetErplyClient(ctx).CustomerManager.SaveCustomer(ct, helpers.JsonToMap(request))
+    if err != nil {
+        ctx.Error(err)
         return
     }
 
@@ -170,9 +180,9 @@ func (c CustomerServiceImpl) Delete(ctx *gin.Context, customerId string) {
     ct, cancel := context.WithTimeout(context.Background(), time.Second * 10)
     defer cancel()
 
-    apiError := helpers.GetErplyClient(ctx).CustomerManager.DeleteCustomer(ct, filter)
-    if apiError != nil {
-        ctx.Error(apiError)
+    err := helpers.GetErplyClient(ctx).CustomerManager.DeleteCustomer(ct, filter)
+    if err != nil {
+        ctx.Error(err)
         return
     }
 
@@ -184,8 +194,3 @@ func (c CustomerServiceImpl) Delete(ctx *gin.Context, customerId string) {
     return
 }
 
-func CustomerServiceInit(cache *redis.Client) *CustomerServiceImpl {
-    return &CustomerServiceImpl{
-        cache: cache,
-    }
-}

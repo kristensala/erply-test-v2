@@ -20,6 +20,7 @@ func InitRouter(init *config.Initialization) *gin.Engine {
 
     protected := v1.Group("")
     protected.Use(middleware.HandleAuthenticate())
+    protected.Use(middleware.RateLimiter())
     protected.Use(middleware.ErplySessionHandler())
 
     cust := protected.Group("/customer")

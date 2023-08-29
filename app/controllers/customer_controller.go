@@ -6,15 +6,21 @@ import (
 )
 
 type CustomerController interface {
+    Add(c *gin.Context)
+    Delete(c *gin.Context)
     GetAll(c *gin.Context)
     GetById(c *gin.Context)
-    Add(c *gin.Context)
     Update(c *gin.Context)
-    Delete(c *gin.Context)
 }
 
 type CustomerControllerImpl struct {
     CustomerService services.CustomerService
+}
+
+func CustomerControllerInit(customerService services.CustomerService) *CustomerControllerImpl {
+    return &CustomerControllerImpl{
+        CustomerService: customerService,
+    }
 }
 
 // Get all customers
@@ -22,7 +28,7 @@ type CustomerControllerImpl struct {
 // @Tags Customer
 // @Produce json
 // @Success 200 {object} models.ApiResponse{data=[]models.CustomerResponse}
-// @Router /getAll [get]
+// @Router /customer/getAll [get]
 func (c CustomerControllerImpl) GetAll(ctx *gin.Context) {
     c.CustomerService.GetAll(ctx)
 }
@@ -32,7 +38,7 @@ func (c CustomerControllerImpl) GetAll(ctx *gin.Context) {
 // @Tags Customer
 // @Produce json
 // @Success 200 {object} models.ApiResponse{data=models.CustomerResponse}
-// @Router /get/{id} [get]
+// @Router /customer/get/{id} [get]
 func (c CustomerControllerImpl) GetById(ctx *gin.Context) {
     customerId := ctx.Param("id")
     c.CustomerService.GetById(ctx, customerId)
@@ -44,7 +50,7 @@ func (c CustomerControllerImpl) GetById(ctx *gin.Context) {
 // @Produce json
 // @Param data body models.CreateCustomerRequest true "customer data"
 // @Success 200 {object} models.ApiResponse{data=object}
-// @Router /create [post]
+// @Router /customer/create [post]
 func (c CustomerControllerImpl) Add(ctx *gin.Context) {
     c.CustomerService.Add(ctx)
 }
@@ -55,7 +61,7 @@ func (c CustomerControllerImpl) Add(ctx *gin.Context) {
 // @Produce json
 // @Param data body models.UpdateCustomerRequest true "customer data"
 // @Success 200 {object} models.ApiResponse{data=object}
-// @Router /update [post]
+// @Router /customer/update [post]
 func (c CustomerControllerImpl) Update(ctx *gin.Context) {
     c.CustomerService.Update(ctx)
 }
@@ -66,15 +72,9 @@ func (c CustomerControllerImpl) Update(ctx *gin.Context) {
 // @Produce json
 // @Param id path string true "customer id"
 // @Success 200 {object} models.ApiResponse{data=object}
-// @Router /remove/{id} [delete]
+// @Router /customer/remove/{id} [delete]
 func (c CustomerControllerImpl) Delete(ctx *gin.Context) {
     customerId := ctx.Param("id")
     c.CustomerService.Delete(ctx, customerId)
 }
 
-func CustomerControllerInit(customerService services.CustomerService) *CustomerControllerImpl {
-    return &CustomerControllerImpl{
-        CustomerService: customerService,
-    }
-
-}

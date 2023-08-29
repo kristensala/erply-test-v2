@@ -71,8 +71,8 @@ func isValidDate(dateInHeader string) bool {
     loc, _ := time.LoadLocation("GMT")
     currentDate := time.Now().In(loc)
 
-    parsedRequestDate, parseError := time.Parse(time.RFC1123, dateInHeader)
-    if parseError != nil {
+    parsedRequestDate, err := time.Parse(time.RFC1123, dateInHeader)
+    if err != nil {
         return false
     }
 
@@ -88,6 +88,7 @@ func isValidRequest(request *http.Request, incomingBase64Signature string, reque
     if secretKey == "" {
         return false
     }
+
     uri := request.URL.EscapedPath()
 
     body := request.Body
