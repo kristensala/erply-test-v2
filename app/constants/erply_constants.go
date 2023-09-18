@@ -1,7 +1,7 @@
 package constants
 
 const (
-    ErplyUsername = "salakristen1@gmail.com"
-    ErplyPassword = "Qwerty1234"
-    ErplyClientCode = "532805"
+    ErplyUsername = "<email>"
+    ErplyPassword = "<password>"
+    ErplyClientCode = "<clientCode>"
 )

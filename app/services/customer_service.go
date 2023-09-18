@@ -52,7 +52,6 @@ func (c CustomerServiceImpl) GetAll(ctx *gin.Context) {
         }
 
         cacheKey := fmt.Sprintf(customerCacheKey, customer.ID)
-
         helpers.SetCacheKeyValue(*c.cache, cacheKey, string(customerJson), 10)
     }
 

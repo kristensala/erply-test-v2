@@ -8,7 +8,6 @@ import (
 	"encoding/hex"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
@@ -92,7 +91,7 @@ func isValidRequest(request *http.Request, incomingBase64Signature string, reque
     uri := request.URL.EscapedPath()
 
     body := request.Body
-    bodyBytes, _ := ioutil.ReadAll(body)
+    bodyBytes, _ := io.ReadAll(body)
 
     requestContentBase64String := ""
     if len(bodyBytes) > 0 {
